@@ -23,7 +23,7 @@
     </header>
 
     <main class="container d-flex gap-5">
-      <div id="sidebar">
+      <div id="sidebar" class="d-grid">
         <div id="search">
           <h2>Search for a City:</h2>
           <form class="d-grid row-gap-3">
@@ -43,7 +43,11 @@
           </form>
         </div>
         <hr />
-        <div id="history-list"></div>
+        <div id="history-list" class="text-center">
+          <p id="history-list-placeholder" class="fst-italic">
+            No Previous Searches
+          </p>
+        </div>
       </div>
       <div id="weather-display">
         <div id="current-weather" class="row border p-2">
