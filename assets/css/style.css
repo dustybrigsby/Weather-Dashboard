@@ -1,3 +1,13 @@
 header {
-  background-image: linear-gradient(to right, #6495ed, #00008b);
+  background-image: linear-gradient(to right, #1e90ff, #00008b);
+  margin-bottom: 1.5vw;
+}
+
+.forecast-cards {
+  background-color: #1b2b5d;
+  padding: 1vw;
+}
+
+#city {
+  padding: 1vw;
 }
