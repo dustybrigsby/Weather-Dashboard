@@ -18,13 +18,13 @@
   </head>
 
   <body>
-    <header class="">
-      <h1 class="display-3">Weather Dashboard</h1>
+    <header class="row text-light pe-5">
+      <h1 class="display-3 text-end">Weather Dashboard</h1>
     </header>
 
-    <main>
-      <div id="sidebar" class="container-md">
-        <div id="search" class="row">
+    <main class="container d-flex">
+      <div id="sidebar">
+        <div id="search">
           <h2>Search for a City:</h2>
           <form>
             <input
@@ -33,14 +33,60 @@
               class="row"
               value="Portland, OR"
             />
-            <input type="submit" class="row" value="Search" />
+            <input
+              type="submit"
+              class="row btn btn-primary"
+              type="button"
+              value="Search"
+            />
           </form>
         </div>
         <div id="example-list"></div>
       </div>
       <div id="weather-display">
-        <div id="current-weather"></div>
-        <div id="five-day-forecast"></div>
+        <div id="current-weather" class="row border">
+          <h3>Portland (Today)</h3>
+          <p>Temp:</p>
+          <p>Wind:</p>
+          <p>Humidity:</p>
+        </div>
+        <div id="five-day-forecast" class="row d-flex">
+          <div id="tomorrow" class="col-lg">
+            <h5>Tomorrow</h5>
+            <p>icon</p>
+            <p>Temp:</p>
+            <p>Wind:</p>
+            <p>Humidity:</p>
+          </div>
+          <div id="tomorrow+1" class="col-lg bg-primary-subtle">
+            <h5>Tomorrow+1</h5>
+            <p>icon</p>
+            <p>Temp:</p>
+            <p>Wind:</p>
+            <p>Humidity:</p>
+          </div>
+          <div id="tomorrow+2" class="col-lg bg-secondary-subtle">
+            <h5>Tomorrow+2</h5>
+            <p>icon</p>
+            <p>Temp:</p>
+            <p>Wind:</p>
+            <p>Humidity:</p>
+          </div>
+          <div id="tomorrow+3" class="col-lg bg-primary">
+            <h5>Tomorrow+3</h5>
+            <p>icon</p>
+            <p>Temp:</p>
+            <p>Wind:</p>
+            <p>Humidity:</p>
+          </div>
+          <div id="tomorrow+4" class="col-lg bg-success-subtle">
+            <h5>Tomorrow+4</h5>
+            <p>icon</p>
+            <p>Temp:</p>
+            <p>Wind:</p>
+            <p>Humidity:</p>
+          </div>
+        </div>
       </div>
     </main>
     <script
