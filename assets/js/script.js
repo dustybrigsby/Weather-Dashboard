@@ -1,22 +1,26 @@
-$(function () {
+$(document).ready(function () {
   // GLOBAL VARIABLES
   const openWeatherKey = "438e8fc2c9765148d603f01f0612659d";
   const searchBtn = $("#search-button");
+  const today = dayjs().format("M/D/YYYY");
   let historyArr;
 
-  if (!localStorage.getItem("city-history")) {
-    let newHistory = [];
-    localStorage.setItem("city-history", newHistory);
-  } else {
-    historyArr = localStorage.getItem("city-history");
-    $("#history-list-placeholder").toggle();
+  // Checks for localStorage data, creates it if none found
+  function historyChecker() {
+    if (!localStorage.getItem("city-history")) {
+      let newHistory = [];
+      localStorage.setItem("city-history", newHistory);
+    } else {
+      historyArr = localStorage.getItem("city-history");
+      $("#history-list-placeholder").toggle();
+      updateHistory("initial-call");
+    }
   }
-
-  console.log("historyArr: " + historyArr);
 
   // Separate starting search function to handle searches from both a new entry and from history
   function startSearch() {
     const cityInput = $("#city");
+    console.log("cityInput: " + cityInput);
 
     getCoords(cityInput);
   }
@@ -33,8 +37,6 @@ $(function () {
       lat: 0,
     };
 
-    updateHistory(cityInput);
-
     fetch(coordsUrl).then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
@@ -48,6 +50,7 @@ $(function () {
     });
 
     getCurrentWeather(coords);
+    updateHistory(cityInput);
   }
 
   function getCurrentWeather(coords) {
@@ -58,15 +61,62 @@ $(function () {
       coords.lon +
       "&appid=" +
       openWeatherKey;
+
+    console.log("currentWeatherUrl: " + currentWeatherUrl);
+
+    fetch(currentWeatherUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+
+    getForecast(coords);
   }
 
+  function getForecast(coords) {
+    const forecastUrl =
+      "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+      coords.lat +
+      "&lon=" +
+      coords.lon +
+      "&appid=" +
+      openWeatherKey;
+
+    console.log("forecastUrl: " + forecastUrl);
+
+    fetch(forecastUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  }
+
+  // Updates localStorage object with latest search
   function updateHistory(newCity) {
-    if (historyArr.length < 10) {
-      historyArr.push(newCity);
-    } else {
-      historyArr.pop();
-      historyArr.unshift(newCity);
-      localStorage.setItem("city-history", historyArr);
+    if (newCity !== "initial-call") {
+      if (historyArr.length < 10) {
+        historyArr.unshift(newCity);
+      } else {
+        historyArr.pop();
+        historyArr.unshift(newCity);
+        localStorage.setItem("city-history", historyArr);
+      }
     }
 
     $.each(historyArr, function () {
@@ -81,4 +131,5 @@ $(function () {
   }
 
   searchBtn.on("click", startSearch);
+  historyChecker();
 });
