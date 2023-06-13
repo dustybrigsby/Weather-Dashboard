@@ -4,6 +4,7 @@ $(document).ready(function () {
   const searchBtn = $("#search-button");
   const today = dayjs().format("M/D/YYYY");
   let historyArr;
+  let cityInput;
 
   // Checks for localStorage data, creates it if none found
   function historyChecker() {
@@ -19,17 +20,17 @@ $(document).ready(function () {
 
   // Separate starting search function to handle searches from both a new entry and from history
   function startSearch() {
-    const cityInput = $("#city");
+    cityInput = $("#city");
     console.log("cityInput: " + cityInput);
 
     getCoords(cityInput);
   }
 
   // Get latitude and longitude coordinates from city name
-  function getCoords(cityInput) {
+  function getCoords(city) {
     const coordsUrl =
       "http://api.openweathermap.org/geo/1.0/direct?q=" +
-      cityInput +
+      city +
       "&limit=1&appid=" +
       openWeatherKey;
     let coords = {
@@ -50,7 +51,7 @@ $(document).ready(function () {
     });
 
     getCurrentWeather(coords);
-    updateHistory(cityInput);
+    updateHistory(city);
   }
 
   function getCurrentWeather(coords) {
@@ -61,6 +62,7 @@ $(document).ready(function () {
       coords.lon +
       "&appid=" +
       openWeatherKey;
+    let currentWeather;
 
     console.log("currentWeatherUrl: " + currentWeatherUrl);
 
@@ -73,10 +75,13 @@ $(document).ready(function () {
       })
       .then((data) => {
         console.log(data);
+        currentWeather = data;
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
+
+    console.log("currentWeather: " + currentWeather);
 
     getForecast(coords);
   }
