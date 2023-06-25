@@ -20,7 +20,7 @@ $(document).ready(function () {
 
   // Separate starting search function to handle searches from both a new entry and from history
   function startSearch() {
-    cityInput = $("#city");
+    cityInput = $("#city").val();
     console.log("cityInput: " + cityInput);
 
     getCoords(cityInput);
@@ -38,17 +38,24 @@ $(document).ready(function () {
       lat: 0,
     };
 
-    fetch(coordsUrl).then(function (response) {
-      if (response.ok) {
-        response.json().then(function (data) {
-          coords.lon = data.coord.lon;
-          coords.lat = data.coord.lat;
-          console.log(
-            "coordinates: [" + coords.lon + ", " + coords.lat + "]"
-          );
-        });
-      }
-    });
+    fetch(coordsUrl)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("coordsUrl response was not ok");
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        coords.lon = data.coord.lon;
+        coords.lat = data.coord.lat;
+        console.log(
+          "coordinates: [" + coords.lon + ", " + coords.lat + "]"
+        );
+
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
 
     getCurrentWeather(coords);
     updateHistory(city);
@@ -69,7 +76,7 @@ $(document).ready(function () {
     fetch(currentWeatherUrl)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Response was not ok");
+          throw new Error("currentWeatherUrl response was not ok");
         }
         return response.json();
       })
@@ -135,6 +142,8 @@ $(document).ready(function () {
     });
   }
 
-  searchBtn.on("click", startSearch);
   historyChecker();
+  searchBtn.on("click", startSearch);
+
+  console.log("END");
 });
