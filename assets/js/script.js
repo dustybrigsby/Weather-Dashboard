@@ -18,7 +18,7 @@ function getCoords() {
     return;
   }
 
-  const coordsUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${ cityInput }&limit=1&appid=${ openWeatherKey }`;
+  const coordsUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${ cityInput }&limit=1&appid=${ openWeatherKey }`;
   console.log(`coordsUrl: ` + coordsUrl);
 
   fetch(coordsUrl)
